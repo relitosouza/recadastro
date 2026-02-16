@@ -1,0 +1,370 @@
+/* =========================================
+   VARIÁVEIS E RESET
+   ========================================= */
+:root {
+    --primary: #4f46e5;
+    --primary-hover: #4338ca;
+    --bg-body: #f1f5f9;
+    --surface: #ffffff;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --danger: #ef4444;
+    --radius: 8px; /* Raio menor para ficar mais sério */
+    --shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra mais leve */
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-body);
+    color: var(--text-main);
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+}
+
+/* =========================================
+   LAYOUT PRINCIPAL
+   ========================================= */
+.app-container { display: flex; width: 100%; height: 100%; }
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 2rem;
+}
+
+nav { display: flex; flex-direction: column; gap: 0.5rem; }
+
+nav button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius);
+    color: var(--text-muted);
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: 0.2s;
+    text-align: left;
+    font-size: 0.9rem;
+}
+
+nav button:hover { background: #f8fafc; color: var(--primary); }
+nav button.active { background: #e0e7ff; color: var(--primary); font-weight: 600; }
+nav button i { font-size: 1.1rem; }
+
+/* Conteúdo */
+.content { flex: 1; padding: 1.5rem; overflow-y: auto; }
+
+.header-section { margin-bottom: 1.5rem; }
+.header-section h2 { font-size: 1.6rem; font-weight: 700; color: var(--text-main); }
+.header-section p { color: var(--text-muted); font-size: 0.9rem; }
+
+/* Tabs */
+.tab { display: none; animation: fadeIn 0.3s ease; }
+.tab.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Cards de Formulário */
+.modern-card {
+    background: #ffffff; /* Garante fundo branco sólido */
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+}
+
+.only-print { display: none; }
+
+/* =========================================
+   FORMULÁRIOS
+   ========================================= */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.input-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.full-width { grid-column: span 2; }
+
+label { font-size: 0.8rem; font-weight: 600; color: var(--text-main); }
+
+input {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    width: 100%;
+}
+input:focus { border-color: var(--primary); }
+
+.photo-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 1rem;
+    background: #f1f5f9;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+.photo-label:hover { background: #e2e8f0; }
+input[type="file"] { display: none; }
+
+.form-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+}
+
+button { cursor: pointer; }
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+}
+.btn-secondary {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.btn-outline {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+.action-buttons { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; }
+
+/* =========================================
+   BUSCA & CARDS (VISUALIZAÇÃO TELA - COMPACTO)
+   ========================================= */
+.search-bar {
+    display: flex; align-items: center; padding: 0.6rem 1rem; gap: 0.8rem; margin-bottom: 1.5rem;
+}
+.search-bar input { border: none; font-size: 1rem; }
+
+/* Grid mais apertado para cards menores */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+    gap: 1rem;
+}
+
+/* Card na Tela - Compactado e Sólido */
+.person-card {
+    background-color: #ffffff; /* Fundo Sólido */
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Sombra sutil */
+    transition: transform 0.2s;
+}
+
+.person-card:hover { transform: translateY(-3px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
+.card-header {
+    height: 60px; /* Menor */
+    background: linear-gradient(135deg, #e0e7ff, #f1f5f9);
+    position: relative;
+}
+
+.card-avatar {
+    width: 50px; /* Menor */
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    object-fit: cover;
+    position: absolute;
+    bottom: -25px;
+    left: 15px;
+    background: white;
+}
+
+.card-body { 
+    padding: 30px 15px 15px 15px; /* Menos padding */
+}
+
+.card-body h3 { font-size: 1rem; color: var(--text-main); margin-bottom: 0.2rem; }
+.card-body .id-tag { font-size: 0.7rem; color: #888; background: #f1f5f9; padding: 1px 4px; border-radius: 4px; }
+
+.info-row {
+    display: flex; align-items: center; gap: 6px; color: var(--text-muted);
+    font-size: 0.8rem; margin-top: 6px;
+}
+.info-row i { font-size: 0.9rem; }
+
+.card-actions {
+    padding: 10px 15px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 8px;
+}
+.btn-icon-small {
+    flex: 1; padding: 6px; border-radius: 4px; border: 1px solid var(--border);
+    background: white; font-size: 0.75rem; color: var(--text-muted);
+    display: flex; justify-content: center; align-items: center; gap: 4px;
+}
+
+/* =========================================
+   TABELA ADMIN
+   ========================================= */
+.table-container { overflow-x: auto; }
+.admin-table { width: 100%; border-collapse: collapse; min-width: 700px; }
+.admin-table th, .admin-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+.admin-table th { background-color: #f8fafc; font-weight: 600; }
+.admin-table tbody tr:nth-child(even) { background-color: #f9fafb; }
+.thumb-table { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; }
+
+/* =========================================
+   LISTA DE RELATÓRIO (MODO TELA)
+   ========================================= */
+#relatorioLista { display: flex; flex-direction: column; gap: 0.5rem; }
+
+#relatorioLista .person-card {
+    display: flex; flex-direction: row; align-items: stretch; min-height: auto;
+    border: 1px solid var(--border);
+}
+
+#relatorioLista .card-header {
+    width: 90px; height: auto; background: #f8fafc;
+    border-right: 1px solid var(--border); padding: 8px;
+    display: flex; justify-content: center; align-items: center;
+}
+#relatorioLista .card-avatar {
+    position: static; width: 60px; height: 60px;
+    border: 1px solid var(--border); transform: none;
+}
+#relatorioLista .card-body { flex: 1; padding: 10px 15px; display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+#relatorioLista .card-actions { display: none; }
+
+/* =========================================
+   RESPONSIVIDADE (MOBILE)
+   ========================================= */
+@media (max-width: 768px) {
+    .app-container { flex-direction: column; height: 100vh; }
+    .sidebar { width: 100%; height: auto; padding: 0.8rem; flex-direction: row; justify-content: space-between; position: sticky; top: 0; z-index: 10; border-bottom: 1px solid var(--border); }
+    .sidebar nav { position: fixed; bottom: 0; left: 0; width: 100%; flex-direction: row; background: white; border-top: 1px solid var(--border); padding: 6px 0; justify-content: space-around; z-index: 100; }
+    .sidebar nav button { flex-direction: column; gap: 3px; font-size: 0.65rem; padding: 6px; border-radius: 0; }
+    .content { padding: 1rem; padding-bottom: 80px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .full-width { grid-column: span 1; }
+    .flex-mobile-break { flex-direction: column !important; gap: 1rem !important; }
+    .form-actions { flex-direction: column-reverse; }
+}
+
+/* =========================================
+   IMPRESSÃO MODERNA (HELVETICA & BORDAS FINAS)
+   ========================================= */
+@media print {
+    @page { margin: 0.8cm; size: A4 portrait; }
+
+    body {
+        background: white;
+        font-family: 'Helvetica', 'Arial', sans-serif;
+        color: #000;
+        font-size: 9pt;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .sidebar, .no-print, .form-actions, .card-actions, nav, button, .id-tag, .actions-card { display: none !important; }
+    .content { padding: 0; margin: 0; overflow: visible; }
+    .app-container { display: block; height: auto; }
+
+    /* Cabeçalho de Impressão */
+    .only-print {
+        display: flex !important; align-items: center; gap: 15px;
+        border-bottom: 2px solid #000; padding-bottom: 10px; margin-bottom: 15px;
+    }
+    .print-logo-area i { font-size: 2rem; }
+    .print-titles h1 { font-size: 16pt; margin: 0; text-transform: uppercase; font-weight: 800; }
+    .print-titles h2 { font-size: 11pt; margin: 0; font-weight: normal; }
+    .print-titles p::after { content: "Gerado em: " attr(data-date); font-size: 8pt; color: #555; }
+
+    /* Lista Compacta e Fina */
+    #relatorioLista { display: block; }
+
+    #relatorioLista .person-card {
+        display: flex; flex-direction: row;
+        border: none;
+        /* BORDA FINA E MODERNA */
+        border-bottom: 0.5pt solid #ccc; 
+        padding: 6px 0; margin: 0;
+        page-break-inside: avoid;
+    }
+
+    /* Foto */
+    #relatorioLista .card-header {
+        width: 60px; padding: 0 10px 0 0; border: none; background: transparent !important;
+    }
+    #relatorioLista .card-avatar {
+        width: 50px; height: 50px;
+        border-radius: 4px; border: 1px solid #ddd; object-fit: cover;
+    }
+
+    /* Texto */
+    #relatorioLista .card-body {
+        flex: 1; padding: 0; display: flex; flex-direction: column; justify-content: center; gap: 2px;
+    }
+
+    #relatorioLista h3 {
+        font-size: 10.5pt; font-weight: 700; margin: 0; text-transform: uppercase; color: #000;
+    }
+
+    #relatorioLista .info-row {
+        font-size: 9pt; line-height: 1.3; margin: 0; display: flex; align-items: center; gap: 4px;
+    }
+
+    /* Telefones Lado a Lado */
+    #relatorioLista .phones-container {
+        display: flex; flex-direction: row; align-items: center; gap: 15px; margin-top: 2px;
+    }
+    #relatorioLista .phones-container .info-row:not(:last-child)::after {
+        content: "|"; margin-left: 15px; color: #ccc; font-weight: lighter;
+    }
+
+    #relatorioLista .info-row i { font-size: 8pt; color: #444 !important; }
+    .address-row { width: 100%; }
+    .familiar-row { margin-top: 2px !important; font-style: italic; font-size: 8.5pt !important; color: #555; border: none !important; padding: 0 !important; }
+}
