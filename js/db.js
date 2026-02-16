@@ -35,6 +35,14 @@ async function getAll(cb) {
         // Ordenação client-side por nome
         data.sort((a, b) => (a.nome || '').localeCompare(b.nome || ''));
 
+        // FIX: Garante que fotos do Drive usem link de visualização (export=view) e não download
+        data = data.map(item => {
+            if (item.foto && item.foto.includes('drive.google.com') && item.foto.includes('export=download')) {
+                item.foto = item.foto.replace('export=download', 'export=view');
+            }
+            return item;
+        });
+
         if (cb) cb(data);
     } catch (err) {
         console.error("Erro ao buscar:", err);
