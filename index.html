@@ -44,16 +44,19 @@
 
             <section id="cadastro" class="tab active">
                 <div class="header-section">
-                    <p>Novo Registro</p>
+                    <p id="tituloForm">Novo Registro</p>
+                    <button type="button" id="btnNovoCadastro" class="btn-outline" style="display: none; margin-top: 5px;">
+                        <i class="ph ph-plus"></i> Sair da Edição / Novo
+                    </button>
                 </div>
                 <form id="formCadastro" class="modern-card fade-in">
                     <input type="hidden" id="editId" />
                     <div class="form-grid">
                         <div class="input-group full-width photo-upload">
-                            <label class="photo-label-group">
-                                <label for="foto" class="photo-label"><i class="ph ph-camera"></i> <span>Carregar Foto</span></label>
+                            <div class="photo-controls-container">
+                                <label for="foto" class="photo-label"><i class="ph ph-upload-simple"></i> <span>Carregar Foto</span></label>
                                 <button type="button" id="btnAbrirCamera" class="btn-outline"><i class="ph ph-aperture"></i> Tirar Foto</button>
-                            </label>
+                            </div>
                             <input type="file" id="foto" accept="image/*">
                             <span class="hint">Máximo 1MB (JPG/PNG)</span>
                             

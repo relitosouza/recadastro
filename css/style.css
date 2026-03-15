@@ -76,7 +76,7 @@ nav button i { font-size: 1.1rem; }
 /* Conteúdo */
 .content { flex: 1; padding: 1.5rem; overflow-y: auto; }
 
-.header-section { margin-bottom: 1.5rem; }
+.header-section { margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 .header-section h2 { font-size: 1.6rem; font-weight: 700; color: var(--text-main); }
 .header-section p { color: var(--text-muted); font-size: 0.9rem; }
 
@@ -121,16 +121,25 @@ input {
 }
 input:focus { border-color: var(--primary); }
 
+.photo-controls-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
 .photo-label {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.2rem;
     background: #f1f5f9;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     transition: 0.2s;
+    border: 1px solid var(--border);
 }
 .photo-label:hover { background: #e2e8f0; }
 

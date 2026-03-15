@@ -14,10 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const photoPreviewContainer = document.getElementById('photoPreviewContainer');
     const photoPreview = document.getElementById('photoPreview');
     const btnRemoverFoto = document.getElementById('btnRemoverFoto');
+    const btnNovoCadastro = document.getElementById('btnNovoCadastro');
+    const tituloForm = document.getElementById('tituloForm');
+    const btnSalvar = formCadastro.querySelector('button[type="submit"]');
 
     let stream = null;
     let fotoCapturadaBase64 = null;
     let facingMode = 'user'; // 'user' para frontal, 'environment' para traseira
+
+    // Verifica suporte a câmera e ajusta UI
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        btnAbrirCamera.style.display = 'none';
+    }
 
     // --- LÓGICA DA CÂMERA ---
     const ligarCamera = async () => {
@@ -103,6 +111,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Aplica máscara no telefone do familiar também
     if(inputFamiliarTel) inputFamiliarTel.addEventListener('input', mascaraTelefone);
 
+    // Botão para resetar edição
+    btnNovoCadastro.onclick = () => {
+        formCadastro.reset();
+        elEditId.value = '';
+        tituloForm.innerText = 'Novo Registro';
+        btnSalvar.innerHTML = '<i class="ph ph-floppy-disk"></i> Salvar Cadastro';
+        btnNovoCadastro.style.display = 'none';
+        fotoCapturadaBase64 = null;
+        photoPreviewContainer.style.display = 'none';
+        document.querySelector('.content').scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     if(inputCep) {
         inputCep.addEventListener('input', (e) => {
             let x = e.target.value.replace(/\D/g, '').match(/(\d{0,5})(\d{0,3})/);
@@ -163,6 +183,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Salvo com sucesso!');
                 formCadastro.reset();
                 elEditId.value = '';
+                tituloForm.innerText = 'Novo Registro';
+                btnSalvar.innerHTML = '<i class="ph ph-floppy-disk"></i> Salvar Cadastro';
+                btnNovoCadastro.style.display = 'none';
                 document.getElementById('foto').value = '';
                 fotoCapturadaBase64 = null;
                 photoPreviewContainer.style.display = 'none';
@@ -197,8 +220,17 @@ function pegarPessoaPorId(id) {
 
 // --- PREENCHER FORM (EDITAR) ---
 window.preencherForm = function(p) {
+    if (!p) return;
     if (typeof openTab === 'function') openTab('cadastro');
     
+    const tituloForm = document.getElementById('tituloForm');
+    const btnSalvar = document.querySelector('#formCadastro button[type="submit"]');
+    const btnNovoCadastro = document.getElementById('btnNovoCadastro');
+    
+    tituloForm.innerText = 'Editando: ' + (p.nome || 'Registro');
+    if (btnSalvar) btnSalvar.innerHTML = '<i class="ph ph-pencil-simple"></i> Atualizar Registro';
+    if (btnNovoCadastro) btnNovoCadastro.style.display = 'inline-flex';
+
     document.getElementById('nome').value = p.nome || '';
     document.getElementById('endereco').value = p.endereco || '';
     document.getElementById('numero').value = p.numero || '';
@@ -213,6 +245,18 @@ window.preencherForm = function(p) {
     document.getElementById('familiarTel').value = p.familiar_telefone || '';
     
     document.getElementById('editId').value = p.id;
+
+    // Se tiver foto, mostra no preview (pode ser URL do drive ou base64)
+    if (p.foto) {
+        const photoPreview = document.getElementById('photoPreview');
+        const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+        if (photoPreview && photoPreviewContainer) {
+            photoPreview.src = p.foto;
+            photoPreviewContainer.style.display = 'block';
+        }
+    } else {
+        document.getElementById('photoPreviewContainer').style.display = 'none';
+    }
     
     document.querySelector('.content').scrollTo({ top: 0, behavior: 'smooth' });
 }
