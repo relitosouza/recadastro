@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnAbrirCamera = document.getElementById('btnAbrirCamera');
     const btnCapturar = document.getElementById('btnCapturar');
     const btnFecharCamera = document.getElementById('btnFecharCamera');
+    const btnTrocarCamera = document.getElementById('btnTrocarCamera');
     const cameraContainer = document.getElementById('cameraContainer');
     const video = document.getElementById('video');
     const canvas = document.getElementById('canvas');
@@ -16,11 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let stream = null;
     let fotoCapturadaBase64 = null;
+    let facingMode = 'user'; // 'user' para frontal, 'environment' para traseira
 
     // --- LÓGICA DA CÂMERA ---
     const ligarCamera = async () => {
         try {
-            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+            if (stream) desligarCamera(); // Garante que a anterior pare antes de trocar
+            
+            stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: facingMode }, 
+                audio: false 
+            });
             video.srcObject = stream;
             cameraContainer.style.display = 'flex';
             btnAbrirCamera.style.display = 'none';
@@ -42,6 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     btnAbrirCamera.addEventListener('click', ligarCamera);
     btnFecharCamera.addEventListener('click', desligarCamera);
+
+    btnTrocarCamera.addEventListener('click', () => {
+        facingMode = (facingMode === 'user') ? 'environment' : 'user';
+        ligarCamera();
+    });
 
     btnCapturar.addEventListener('click', () => {
         const context = canvas.getContext('2d');
