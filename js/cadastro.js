@@ -4,6 +4,74 @@ document.addEventListener('DOMContentLoaded', () => {
     const formCadastro = document.getElementById('formCadastro');
     const elEditId = document.getElementById('editId');
     const elFoto = document.getElementById('foto');
+    const btnAbrirCamera = document.getElementById('btnAbrirCamera');
+    const btnCapturar = document.getElementById('btnCapturar');
+    const btnFecharCamera = document.getElementById('btnFecharCamera');
+    const cameraContainer = document.getElementById('cameraContainer');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+    const photoPreview = document.getElementById('photoPreview');
+    const btnRemoverFoto = document.getElementById('btnRemoverFoto');
+
+    let stream = null;
+    let fotoCapturadaBase64 = null;
+
+    // --- LÓGICA DA CÂMERA ---
+    const ligarCamera = async () => {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+            video.srcObject = stream;
+            cameraContainer.style.display = 'flex';
+            btnAbrirCamera.style.display = 'none';
+        } catch (err) {
+            console.error("Erro ao acessar a câmera: ", err);
+            alert("Não foi possível acessar a câmera. Verifique as permissões.");
+        }
+    };
+
+    const desligarCamera = () => {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+        video.srcObject = null;
+        cameraContainer.style.display = 'none';
+        btnAbrirCamera.style.display = 'flex';
+    };
+
+    btnAbrirCamera.addEventListener('click', ligarCamera);
+    btnFecharCamera.addEventListener('click', desligarCamera);
+
+    btnCapturar.addEventListener('click', () => {
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        fotoCapturadaBase64 = canvas.toDataURL('image/jpeg');
+        mostrarPreview(fotoCapturadaBase64);
+        desligarCamera();
+    });
+
+    const mostrarPreview = (base64) => {
+        photoPreview.src = base64;
+        photoPreviewContainer.style.display = 'block';
+        elFoto.value = ''; // Limpa o input de arquivo se houver
+    };
+
+    btnRemoverFoto.addEventListener('click', () => {
+        fotoCapturadaBase64 = null;
+        photoPreview.src = '';
+        photoPreviewContainer.style.display = 'none';
+    });
+
+    elFoto.addEventListener('change', () => {
+        if (elFoto.files[0]) {
+            fotoCapturadaBase64 = null; // Prioriza o arquivo selecionado
+            photoPreviewContainer.style.display = 'none';
+        }
+    });
 
     // --- MÁSCARAS ---
     const inputCelular = document.getElementById('celular');
@@ -52,6 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (elFoto.files[0]) {
                 if (elFoto.files[0].size > 1024 * 1024) return alert('Foto muito grande (Max 1MB)');
                 fotoFinal = await toBase64(elFoto.files[0]);
+            } else if (fotoCapturadaBase64) {
+                fotoFinal = fotoCapturadaBase64;
             } else if (idAtual) {
                 try {
                     const pessoaAntiga = await pegarPessoaPorId(idAtual);
@@ -82,6 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 formCadastro.reset();
                 elEditId.value = '';
                 document.getElementById('foto').value = '';
+                fotoCapturadaBase64 = null;
+                photoPreviewContainer.style.display = 'none';
                 
                 // Volta para o topo e muda aba
                 document.querySelector('.content').scrollTo({ top: 0, behavior: 'smooth' });

@@ -130,8 +130,67 @@ input:focus { border-color: var(--primary); }
     border-radius: 6px;
     cursor: pointer;
     font-size: 0.85rem;
+    transition: 0.2s;
 }
 .photo-label:hover { background: #e2e8f0; }
+
+.photo-label-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.camera-wrapper {
+    margin-top: 15px;
+    background: #000;
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: var(--shadow);
+}
+
+#video {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    background: #000;
+}
+
+.camera-controls {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.photo-preview-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 2px solid var(--primary);
+}
+
+.btn-danger-text {
+    background: transparent;
+    border: none;
+    color: var(--danger);
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 5px;
+    padding: 5px;
+}
+.btn-danger-text:hover { text-decoration: underline; }
+
 input[type="file"] { display: none; }
 
 .form-actions {
@@ -305,6 +364,7 @@ button { cursor: pointer; }
         font-family: 'Helvetica', 'Arial', sans-serif;
         color: #000;
         font-size: 9pt;
+        print-color-adjust: exact;
         -webkit-print-color-adjust: exact;
     }
 

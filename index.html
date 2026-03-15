@@ -50,9 +50,26 @@
                     <input type="hidden" id="editId" />
                     <div class="form-grid">
                         <div class="input-group full-width photo-upload">
-                            <label for="foto" class="photo-label"><i class="ph ph-camera"></i> <span>Carregar Foto</span></label>
+                            <label class="photo-label-group">
+                                <label for="foto" class="photo-label"><i class="ph ph-camera"></i> <span>Carregar Foto</span></label>
+                                <button type="button" id="btnAbrirCamera" class="btn-outline"><i class="ph ph-aperture"></i> Tirar Foto</button>
+                            </label>
                             <input type="file" id="foto" accept="image/*">
                             <span class="hint">Máximo 1MB (JPG/PNG)</span>
+                            
+                            <!-- Interface da Câmera -->
+                            <div id="cameraContainer" class="camera-wrapper" style="display: none;">
+                                <video id="video" autoplay playsinline></video>
+                                <div class="camera-controls">
+                                    <button type="button" id="btnCapturar" class="btn-primary"><i class="ph ph-camera"></i> Capturar</button>
+                                    <button type="button" id="btnFecharCamera" class="btn-secondary">Cancelar</button>
+                                </div>
+                            </div>
+                            <canvas id="canvas" style="display: none;"></canvas>
+                            <div id="photoPreviewContainer" style="display: none; margin-top: 10px;">
+                                <img id="photoPreview" class="photo-preview-img">
+                                <button type="button" id="btnRemoverFoto" class="btn-danger-text"><i class="ph ph-trash"></i> Remover</button>
+                            </div>
                         </div>
                         <div class="input-group full-width">
                             <label for="nome">Nome Completo <span style="color: red;">*</span></label>
